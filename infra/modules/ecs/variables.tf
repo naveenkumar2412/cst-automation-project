@@ -1,0 +1,13 @@
+variable "ecr_repo_name" {}
+variable "cluster_name" {}
+variable "family_name" {}
+variable "container_name" {}
+variable "container_port" {}
+variable "ecr_repo_url" {}
+variable "execution_role_arn" {}
+variable "subnet_ids" {}
+variable "ecs_sg_id" {}
+variable "target_group_arn" {}
+variable "log_group_name" {}
+variable "region" {}
+variable "service_name" {}
