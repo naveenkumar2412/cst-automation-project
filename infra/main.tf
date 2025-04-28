@@ -25,9 +25,9 @@ module "cloudwatch" {
 module "alb" {
   source = "./modules/alb"
   alb_sg_id = module.sg.alb_sg_id
-  subnet_ids = module.vpc.public_subnet_ids
+  subnet_ids = module.vpc.public_subnets
   vpc_id = module.vpc.vpc_id
-  target_port = 3000
+  target_port = 80
 }
 
 module "ecs" {
@@ -39,7 +39,7 @@ module "ecs" {
   container_port = 80
   ecr_repo_url = "1234567890.dkr.ecr.us-east-1.amazonaws.com/my-app-repo"
   execution_role_arn = module.iam.task_execution_role_arn
-  subnet_ids = module.vpc.public_subnet_ids
+  subnet_ids = module.vpc.public_subnets
   ecs_sg_id = module.sg.ecs_sg_id
   target_group_arn = module.alb.target_group_arn
   log_group_name = module.cloudwatch.log_group_name
