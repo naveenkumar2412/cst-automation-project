@@ -24,10 +24,12 @@ jobs:
       uses: hashicorp/setup-terraform@v3
 
     - name: Terraform Init
-      run: terraform -chdir=infra init
+      run: terraform -chdir=infra init -reconfigure
 
     - name: Terraform Plan
-      run: terraform -chdir=infra plan
+      run: |
+        export TF_LOG=DEBUG
+        terraform -chdir=infra plan -parallelism=5
 
     - name: Terraform Apply
       run: terraform -chdir=infra apply -auto-approve
