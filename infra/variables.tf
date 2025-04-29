@@ -22,13 +22,4 @@ variable "container_port" {
   default     = 80
 }
 
-variable "ecr_repo_url" {
-  description = "ECR Repository URL for container image"
-  type        = string
-}
 
-variable "desired_count" {
-  description = "Number of ECS tasks desired"
-  type        = number
-  default     = 1
-}

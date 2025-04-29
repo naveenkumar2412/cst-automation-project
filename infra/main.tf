@@ -7,42 +7,40 @@ module "vpc" {
   az_b = "ap-south-1b"
 }
 
-module "sg" {
-  source = "./modules/sg"
-  vpc_id = module.vpc.vpc_id
-  container_port = 80
-}
 
 module "iam" {
   source = "./modules/iam"
 }
 
-module "cloudwatch" {
-  source = "./modules/cloudwatch"
-  log_group_name = "/ecs/my-app"
+module "sg" {
+  source    = "./modules/sg"
+  vpc_id    = module.vpc.vpc_id
+  container_port = 80
 }
 
 module "alb" {
-  source = "./modules/alb"
-  alb_sg_id = module.sg.alb_sg_id
-  subnet_ids = module.vpc.public_subnets
-  vpc_id = module.vpc.vpc_id
-  target_port = 80
+  source            = "./modules/alb"
+  public_subnet_ids = module.vpc.public_subnet_ids
+  container_port    = 80
+  vpc_id            = module.vpc.vpc_id
+  alb_sg_id         = module.sg.alb_sg_id
+}
+
+module "ecr" {
+  source           = "./modules/ecr"
+  repository_name  = "naveen-ecr"
 }
 
 module "ecs" {
   source = "./modules/ecs"
-  ecr_repo_name = "my-app-repo"
-  cluster_name = "my-app-cluster"
-  family_name = "my-app-family"
-  container_name = "my-app-container"
-  container_port = 80
-  ecr_repo_url = "1234567890.dkr.ecr.us-east-1.amazonaws.com/my-app-repo"
-  execution_role_arn = module.iam.task_execution_role_arn
-  subnet_ids = module.vpc.public_subnets
-  ecs_sg_id = module.sg.ecs_sg_id
-  target_group_arn = module.alb.target_group_arn
-  log_group_name = module.cloudwatch.log_group_name
-  region = "ap-south-1"
-  service_name = "my-app-service"
+
+  log_group_name               = "example"
+  cluster_name                 = "naveenk"
+  kms_key_description          = "example"
+  container_image              = "service-first"
+  container_name               = "nave-first"
+  target_group_arn             = module.alb.target_group_arn
+  iam_role_arn                 = module.iam.ecs_task_execution_role_arn
+  iam_role_policy_dependency   = null
+  availability_zones           = ["ap-south-1a", "ap-south-1b"]
 }

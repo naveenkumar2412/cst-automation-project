@@ -1,15 +1,7 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.96.0"
-    }
-  }
-}
-
 resource "aws_security_group" "alb_sg" {
   name   = "alb-sg"
   vpc_id = var.vpc_id
+
 
   ingress {
     from_port   = 80
@@ -25,30 +17,24 @@ resource "aws_security_group" "alb_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-resource "aws_security_group" "ecs_sg" {
-  name   = "ecs-sg"
-  vpc_id = var.vpc_id
-
+  # Allow app traffic (from ALB to ECS) on container port
   ingress {
-    from_port       = var.container_port
-    to_port         = var.container_port
-    protocol        = "tcp"
-    security_groups = [aws_security_group.alb_sg.id]
+    from_port   = var.container_port
+    to_port     = var.container_port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # or restrict to internal CIDR if needed
   }
+
 
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "nave-alb-sg"
   }
 }
 
