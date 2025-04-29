@@ -24,22 +24,19 @@ resource "aws_ecs_cluster" "test" {
 
 resource "aws_ecs_task_definition" "service" {
   family = "service"
-
-  container_definitions = jsonencode([
-    {
-      name      = var.container_name
-      image     = var.container_image
-      cpu       = 10
-      memory    = 512
-      essential = true
-      portMappings = [
-        {
-          containerPort = 80
-          hostPort      = 80
-        }
-      ]
-    }
-  ])
+  container_definitions = jsonencode([{
+    name      = "first"
+    image     = "service-first"
+    cpu       = 10
+    memory    = 512
+    essential = true
+    portMappings = [
+      {
+        containerPort = 80
+        hostPort      = 80
+      }
+    ]
+  }])
 
   volume {
     name      = "service-storage"
@@ -48,7 +45,7 @@ resource "aws_ecs_task_definition" "service" {
 
   placement_constraints {
     type       = "memberOf"
-    expression = "attribute:ecs.availability-zone in ${join(", ", var.availability_zones)}"
+    expression = "attribute:ecs.availability-zone in [\"ap-south-1a\", \"ap-south-1b\"]"
   }
 }
 
