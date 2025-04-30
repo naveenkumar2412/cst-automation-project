@@ -1,30 +1,30 @@
-output "ecs_cluster_id" {
-  description = "ID of the ECS Cluster"
-  value       = aws_ecs_cluster.test.id
-}
-
 output "ecs_cluster_name" {
-  description = "Name of the ECS Cluster"
+  description = "The name of the ECS Cluster"
   value       = aws_ecs_cluster.test.name
 }
 
-output "task_definition_arn" {
-  description = "ARN of the ECS Task Definition"
+output "ecs_cluster_arn" {
+  description = "The ARN of the ECS Cluster"
+  value       = aws_ecs_cluster.test.arn
+}
+
+output "ecs_task_definition_arn" {
+  description = "The ARN of the ECS Task Definition"
   value       = aws_ecs_task_definition.service.arn
 }
 
-output "kms_key_arn" {
-  description = "ARN of the KMS Key used for ECS Exec"
-  value       = aws_kms_key.example.arn
+output "ecs_service_name" {
+  description = "The name of the ECS Service"
+  value       = aws_ecs_service.nave.name
 }
 
-output "log_group_name" {
-  description = "Name of the CloudWatch Log Group"
+output "cloudwatch_log_group_name" {
+  description = "The name of the CloudWatch Log Group used for ECS Exec"
   value       = aws_cloudwatch_log_group.example.name
 }
 
-output "ecs_service_name" {
-  description = "Name of the ECS Service"
-  value       = aws_ecs_service.mongo.name
+output "kms_key_arn" {
+  description = "The ARN of the KMS key used for ECS Exec logging"
+  value       = aws_kms_key.example.arn
 }
 

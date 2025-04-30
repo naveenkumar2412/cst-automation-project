@@ -1,9 +1,13 @@
-name: Deploy App to AWS
+name: Deploy to AWS ECS
 
 on:
   push:
     branches:
       - main
+
+env:
+  AWS_REGION: ap-south-1
+  ECR_REPOSITORY_NAME: naveen-ecr
 
 jobs:
   deploy:
@@ -18,7 +22,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-south-1
+        aws-region: ${{ env.AWS_REGION }}
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
@@ -26,20 +30,32 @@ jobs:
     - name: Terraform Init
       run: terraform -chdir=infra init -reconfigure
 
-    - name: Terraform Plan
-      run: |
-        export TF_LOG=DEBUG
-        terraform -chdir=infra plan -parallelism=5
-
     - name: Terraform Apply
       run: terraform -chdir=infra apply -auto-approve
 
-    - name: Build Docker image
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Get ECR Repository URI
+      id: get-ecr-uri
       run: |
-        docker build -t ${{ secrets.ECR_REPO_URI }}:latest ./app
-        aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REPO_URI }}
-        docker push ${{ secrets.ECR_REPO_URI }}:latest
+        URI=$(aws ecr describe-repositories \
+          --repository-names ${{ env.ECR_REPOSITORY_NAME }} \
+          --region ${{ env.AWS_REGION }} \
+          --query 'repositories[0].repositoryUri' --output text)
+        echo "URI=$URI" >> $GITHUB_ENV
+
+    - name: Build and Push Docker Image to ECR
+      run: |
+        docker build -t $URI:latest ./app
+        docker push $URI:latest
 
     - name: Update ECS Service
       run: |
-        aws ecs update-service --cluster your-ecs-cluster-name --service your-ecs-service-name --force-new-deployment
+        aws ecs update-service \
+          --cluster naveenk \
+          --service nave-first \
+          --force-new-deployment \
+          --region ${{ env.AWS_REGION }}
+

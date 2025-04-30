@@ -37,10 +37,19 @@ module "ecs" {
   log_group_name               = "example"
   cluster_name                 = "naveenk"
   kms_key_description          = "example"
-  container_image              = "service-first"
+  ecr_repository_name          = module.ecr.repository_name
+  #container_image              = "service-first"
   container_name               = "nave-first"
   target_group_arn             = module.alb.target_group_arn
   iam_role_arn                 = module.iam.ecs_task_execution_role_arn
   iam_role_policy_dependency   = null
   availability_zones           = ["ap-south-1a", "ap-south-1b"]
+  
+  execution_role_arn           = module.iam.ecs_task_execution_role_arn
+  task_role_arn                = module.iam.ecs_task_execution_role_arn
+  subnet_ids                   = module.vpc.public_subnet_ids
+  security_group_id            = module.sg.ecs_security_group_id
 }
+
+
+

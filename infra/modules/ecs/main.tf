@@ -3,7 +3,8 @@ resource "aws_kms_key" "example" {
 }
 
 resource "aws_cloudwatch_log_group" "example" {
-  name = var.log_group_name
+  name              = var.log_group_name
+  retention_in_days = 14
 }
 
 resource "aws_ecs_cluster" "test" {
@@ -22,45 +23,51 @@ resource "aws_ecs_cluster" "test" {
   }
 }
 
+data "aws_ecr_image" "latest" {
+  repository_name = var.ecr_repository_name
+  most_recent     = true
+}
+
 resource "aws_ecs_task_definition" "service" {
-  family = "service"
+  family                   = "service"
+  requires_compatibilities = ["FARGATE"]
+  network_mode            = "awsvpc"
+  cpu                     = "256"
+  memory                  = "512"
+  execution_role_arn      = var.execution_role_arn
+  task_role_arn           = var.task_role_arn
+
   container_definitions = jsonencode([{
-    name      = "first"
-    image     = "service-first"
+    name      = var.container_name
+    image     = data.aws_ecr_image.latest.image_uri
     cpu       = 10
     memory    = 512
     essential = true
-    portMappings = [
-      {
-        containerPort = 80
-        hostPort      = 80
-      }
-    ]
+    portMappings = [{
+      containerPort = 80
+      protocol      = "tcp"
+    }]
   }])
-
-  volume {
-    name      = "service-storage"
-    host_path = "/ecs/service-storage"
-  }
-
-  placement_constraints {
-    type       = "memberOf"
-    expression = "attribute:ecs.availability-zone in [\"ap-south-1a\", \"ap-south-1b\"]"
-  }
 }
 
-resource "aws_ecs_service" "mongo" {
-  name            = "mongodb"
+
+ # volume {
+  #  name      = "service-storage"
+ #   host_path = "/ecs/service-storage"
+#  }
+
+#  placement_constraints {
+ #   type       = "memberOf"
+  #  expression = "attribute:ecs.availability-zone in [\"ap-south-1a\", \"ap-south-1b\"]"
+ # }
+
+
+resource "aws_ecs_service" "nave" {
+  name            = "nave-service"
   cluster         = aws_ecs_cluster.test.id
   task_definition = aws_ecs_task_definition.service.arn
   desired_count   = 3
-  iam_role        = var.iam_role_arn
-  depends_on      = [var.iam_role_policy_dependency]
-
-  ordered_placement_strategy {
-    type  = "binpack"
-    field = "cpu"
-  }
+  launch_type     = "FARGATE"
 
   load_balancer {
     target_group_arn = var.target_group_arn
@@ -68,8 +75,14 @@ resource "aws_ecs_service" "mongo" {
     container_port   = 80
   }
 
-  placement_constraints {
-    type       = "memberOf"
-    expression = "attribute:ecs.availability-zone in ${join(", ", var.availability_zones)}"
+  network_configuration {
+    subnets          = var.subnet_ids              
+    security_groups  = [var.security_group_id]    
+    assign_public_ip = true                        
   }
+
+  
+  depends_on = [var.iam_role_policy_dependency]    
 }
+
+
