@@ -69,3 +69,18 @@ variable "iam_role_arn" {
   type        = string
 }
 
+variable "aws_account_id" {
+  description = "AWS Account ID"
+  type        = string
+}
+
+variable "aws_region" {
+  description = "AWS Region"
+  type        = string
+  default     = "ap-south-1"
+}
+
+variable "container_image" {
+  description = "Image URI for the ECS container"
+  type        = string
+}

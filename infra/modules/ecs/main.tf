@@ -23,9 +23,10 @@ resource "aws_ecs_cluster" "test" {
   }
 }
 
-data "aws_ecr_image" "latest" {
-  repository_name = var.ecr_repository_name
-  most_recent     = true
+data "aws_caller_identity" "current" {}
+
+locals {
+  container_image_uri = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.ecr_repository_name}:latest"
 }
 
 resource "aws_ecs_task_definition" "service" {
@@ -39,7 +40,7 @@ resource "aws_ecs_task_definition" "service" {
 
   container_definitions = jsonencode([{
     name      = var.container_name
-    image     = data.aws_ecr_image.latest.image_uri
+    image     = var.container_image
     cpu       = 10
     memory    = 512
     essential = true

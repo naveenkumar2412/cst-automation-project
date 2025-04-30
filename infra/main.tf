@@ -31,14 +31,17 @@ module "ecr" {
   repository_name  = "naveen-ecr"
 }
 
+data "aws_caller_identity" "current" {}
+
 module "ecs" {
   source = "./modules/ecs"
 
   log_group_name               = "example"
   cluster_name                 = "naveenk"
   kms_key_description          = "example"
+  aws_account_id               = var.aws_account_id
   ecr_repository_name          = module.ecr.repository_name
-  #container_image              = "service-first"
+  container_image              = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${module.ecr.repository_name}:latest"
   container_name               = "nave-first"
   target_group_arn             = module.alb.target_group_arn
   iam_role_arn                 = module.iam.ecs_task_execution_role_arn
@@ -50,6 +53,7 @@ module "ecs" {
   subnet_ids                   = module.vpc.public_subnet_ids
   security_group_id            = module.sg.ecs_security_group_id
 }
+
 
 
 

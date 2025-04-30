@@ -1,4 +1,4 @@
-variable "region" {
+variable "aws_region" {
   description = "AWS Region"
   type        = string
   default     = "ap-south-1"
@@ -22,4 +22,10 @@ variable "container_port" {
   default     = 80
 }
 
+
+variable "aws_account_id" {
+  description = "AWS Account ID"
+  type        = string
+  default     = "011528270926"
+}
 
