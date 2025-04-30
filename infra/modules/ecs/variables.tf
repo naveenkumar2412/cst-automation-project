@@ -54,10 +54,17 @@ variable "log_group_name" {
   type        = string
 }
 
-variable "cluster_name" {
-  description = "Name of the ECS cluster"
+variable "ecs_cluster_id" {
+  description = "The ECS cluster ID"
   type        = string
 }
+
+variable "cluster_name" {
+  description = "The name of the ECS Cluster"
+  type        = string
+  default     = "default-cluster"  
+}
+
 
 variable "kms_key_description" {
   description = "Description for the KMS key"
@@ -84,3 +91,4 @@ variable "container_image" {
   description = "Image URI for the ECS container"
   type        = string
 }
+

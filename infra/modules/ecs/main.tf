@@ -7,20 +7,8 @@ resource "aws_cloudwatch_log_group" "example" {
   retention_in_days = 14
 }
 
-resource "aws_ecs_cluster" "test" {
-  name = var.cluster_name
-
-  configuration {
-    execute_command_configuration {
-      kms_key_id = aws_kms_key.example.arn
-      logging    = "OVERRIDE"
-
-      log_configuration {
-        cloud_watch_encryption_enabled = true
-        cloud_watch_log_group_name     = aws_cloudwatch_log_group.example.name
-      }
-    }
-  }
+resource "aws_ecs_cluster" "naveenk" {
+  name = "naveenk"
 }
 
 data "aws_caller_identity" "current" {}
@@ -51,23 +39,11 @@ resource "aws_ecs_task_definition" "service" {
   }])
 }
 
-
- # volume {
-  #  name      = "service-storage"
- #   host_path = "/ecs/service-storage"
-#  }
-
-#  placement_constraints {
- #   type       = "memberOf"
-  #  expression = "attribute:ecs.availability-zone in [\"ap-south-1a\", \"ap-south-1b\"]"
- # }
-
-
 resource "aws_ecs_service" "nave" {
-  name            = "nave-service"
-  cluster         = aws_ecs_cluster.test.id
+  name            = "nave-first"
+  cluster         = var.ecs_cluster_id  
   task_definition = aws_ecs_task_definition.service.arn
-  desired_count   = 3
+  desired_count   = 1
   launch_type     = "FARGATE"
 
   load_balancer {
@@ -77,13 +53,11 @@ resource "aws_ecs_service" "nave" {
   }
 
   network_configuration {
-    subnets          = var.subnet_ids              
-    security_groups  = [var.security_group_id]    
-    assign_public_ip = true                        
+    subnets          = var.subnet_ids
+    security_groups  = [var.security_group_id]
+    assign_public_ip = true
   }
 
-  
-  depends_on = [var.iam_role_policy_dependency]    
+  depends_on = [aws_ecs_cluster.naveenk]  
 }
-
 
