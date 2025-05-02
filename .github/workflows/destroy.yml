@@ -1,7 +1,7 @@
 name: Destroy Infrastructure
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # Manual trigger from GitHub UI
 
 jobs:
   destroy:
@@ -24,8 +24,11 @@ jobs:
           aws-region: ap-south-1
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init \
+          -backend-config="bucket=naveen-1812001-terraform-state-bucket" \
+          -backend-config="key=global/s3/terraform.tfstate" \
+          -backend-config="region=ap-south-1"
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve -var-file="terraform.tfvars"
+        run: terraform destroy -auto-approve -var-file="infra/terraform.tfvars"
 
