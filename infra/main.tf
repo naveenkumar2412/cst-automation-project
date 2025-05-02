@@ -24,6 +24,7 @@ module "alb" {
   container_port    = 80
   vpc_id            = module.vpc.vpc_id
   alb_sg_id         = module.sg.alb_sg_id
+  acm_certificate_arn = var.acm_certificate_arn
 }
 
 module "ecr" {

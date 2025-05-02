@@ -14,3 +14,7 @@ variable "alb_sg_id" {
   type = string
 }
 
+variable "acm_certificate_arn" {
+  description = "ARN of the ACM SSL certificate"
+  type        = string
+}
