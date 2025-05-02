@@ -24,7 +24,9 @@ acm_certificate_arn  = "arn:aws:acm:ap-south-1:011528270926:certificate/109b00df
 # Security Groups
 sg_Name              = "nave-alb-sg"
 
-
+# terraform.tfvars
+bucket_name         = "naveen-terraform-state-bucket"
+dynamodb_table_name = "naveen-terraform-locks"
 
 
 

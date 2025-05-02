@@ -55,3 +55,9 @@ module "ecs" {
   security_group_id            = module.sg.ecs_security_group_id
 }
 
+module "s3_backend" {
+  source              = "./modules/s3-backend"
+  bucket_name         = "naveen-terraform-state-bucket"
+  dynamodb_table_name = "naveen-terraform-locks"
+}
+

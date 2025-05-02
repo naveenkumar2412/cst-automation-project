@@ -107,3 +107,11 @@ variable "sg_Name" {
 #  description = "ARN of the ACM SSL certificate"
 #  type        = string
 #}
+variable "bucket_name" {
+  type = string
+}
+
+variable "dynamodb_table_name" {
+  type = string
+}
+
