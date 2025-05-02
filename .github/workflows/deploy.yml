@@ -28,10 +28,15 @@ jobs:
       uses: hashicorp/setup-terraform@v3
 
     - name: Terraform Init
-      run: terraform -chdir=infra init -reconfigure
+      run: terraform -chdir=infra init -reconfigure \
+        -backend-config="bucket=naveen-1812001-terraform-state-bucket" \
+        -backend-config="key=global/s3/terraform.tfstate" \
+        -backend-config="region=ap-south-1" \
+        -migrate-state \
+        -force-copy
 
     - name: Terraform Apply
-      run: terraform -chdir=infra apply -auto-approve
+      run: terraform -chdir=infra apply -auto-approve -var-file="infra/terraform.tfvars"
 
     - name: Login to Amazon ECR
       id: login-ecr
@@ -58,4 +63,3 @@ jobs:
           --service nave-first \
           --force-new-deployment \
           --region ${{ env.AWS_REGION }}
-
