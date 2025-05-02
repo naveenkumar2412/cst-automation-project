@@ -57,7 +57,7 @@ module "ecs" {
 
 module "s3_backend" {
   source              = "./modules/s3-backend"
-  bucket_name         = "naveen-terraform-state-bucket"
+  bucket_name         = "naveen-1812001-terraform-state-bucket"
   dynamodb_table_name = "naveen-terraform-locks"
 }
 
