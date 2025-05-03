@@ -27,9 +27,11 @@ jobs:
 
     - name: Terraform Init
       run: terraform init
+    
+    - name: Destroy ECS Service
+      run: terraform destroy -target=module.ecs.aws_ecs_service.nave -auto-approve
 
-    - name: Terraform Destroy ECS Service (nave-first)
-      run: terraform destroy -target=aws_ecs_service.nave-first -auto-approve
-
-    - name: Terraform Destroy Everything Else
+    - name: Destroy All Resources
       run: terraform destroy -auto-approve
+
+    
