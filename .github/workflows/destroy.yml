@@ -29,8 +29,9 @@ jobs:
       run: terraform init
 
     # Ensure ECR force_delete is applied
-    - name: Apply ECR Config (force_delete = true)
-      run: terraform apply -target=module.ecr -auto-approve
+    - name: Destroy ECR Repository
+      #run: terraform apply -target=module.ecr -auto-approve
+      run: terraform destroy -target=module.ecr.aws_ecr_repository.foo -auto-approve
 
     # Destroy ECS service first
     - name: Destroy ECS Service
