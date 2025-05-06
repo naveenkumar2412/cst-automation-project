@@ -7,8 +7,8 @@ resource "aws_cloudwatch_log_group" "example" {
   retention_in_days = 14
 }
 
-resource "aws_ecs_cluster" "naveenk" {
-  name = "naveenk"
+resource "aws_ecs_cluster" "naveencst" {
+  name = var.cluster_name
 }
 
 data "aws_caller_identity" "current" {}
@@ -18,7 +18,7 @@ locals {
 }
 
 resource "aws_ecs_task_definition" "service" {
-  family                   = "service"
+  family                   = var.ecs_task_definition
   requires_compatibilities = ["FARGATE"]
   network_mode            = "awsvpc"
   cpu                     = "256"
@@ -40,7 +40,7 @@ resource "aws_ecs_task_definition" "service" {
 }
 
 resource "aws_ecs_service" "nave" {
-  name            = "nave-first"
+  name            = var.service_name
   cluster         = var.ecs_cluster_id  
   task_definition = aws_ecs_task_definition.service.arn
   desired_count   = 1
@@ -58,6 +58,6 @@ resource "aws_ecs_service" "nave" {
     assign_public_ip = true
   }
 
-  depends_on = [aws_ecs_cluster.naveenk]  
+  depends_on = [aws_ecs_cluster.naveencst]  
 }
 

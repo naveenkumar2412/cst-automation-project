@@ -97,21 +97,79 @@ variable "availability_zones" {
 }
 
 # ALB and Target Group (TG)
-variable "sg_Name" {
-  description = "Name of the security group"
-  type        = string
-}
+#variable "sg_name" {
+#  description = "Name of the security group"
+#  type        = string
+#}
 
 # ACM SSL Certificate ARN (for ALB listener)
 #variable "acm_certificate_arn" {
 #  description = "ARN of the ACM SSL certificate"
 #  type        = string
 #}
-variable "bucket_name" {
+
+
+
+variable "vpc_name" {
+  description = "Tag name for the VPC"
+  type        = string
+}
+
+variable "public_subnet_a_name" {
+  description = "Tag name for Public Subnet A"
+  type        = string
+}
+
+variable "public_subnet_b_name" {
+  description = "Tag name for Public Subnet B"
+  type        = string
+}
+
+variable "igw_name" {
+  description = "Tag name for Internet Gateway"
+  type        = string
+}
+
+variable "route_table_name" {
+  description = "Tag name for Route Table"
+  type        = string
+}
+
+# Optional: Declare any additional variables you put in terraform.tfvars
+variable "aws_lb_name" {
+  description = "Name of the Application Load Balancer"
+  type        = string
+}
+
+variable "lb_target_group_name" {
+  description = "Name of the Load Balancer target group"
+  type        = string
+}
+
+#variable "aws_lb_name" {
+#  description = "Name of the Application Load Balancer"
+#  type        = string
+#}
+
+#variable "lb_target_group_name" {
+ # description = "Name of the Target Group for the ALB"
+ # type        = string
+#}
+
+#variable "ecs_task_definition" {
+ # description = "ECS Task Definition name"
+ # type        = string
+#}
+
+variable "service_name" {
+  description = "Name of the ECS service"
+  type        = string
+}
+
+variable "ecs_task_definition" {
   type = string
 }
 
-variable "dynamodb_table_name" {
+variable "sg_name" {
   type = string
 }
-

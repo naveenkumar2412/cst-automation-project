@@ -18,3 +18,13 @@ variable "acm_certificate_arn" {
   description = "ARN of the ACM SSL certificate"
   type        = string
 }
+
+variable "aws_lb_name" {
+  description = "Name of the Application Load Balancer"
+  type        = string
+}
+
+variable "lb_target_group_name" {
+  description = "Name of the Load Balancer target group"
+  type        = string
+}

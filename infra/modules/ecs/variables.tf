@@ -92,3 +92,12 @@ variable "container_image" {
   type        = string
 }
 
+variable "ecs_task_definition" {
+  description = "Name of the ECS task definition"
+  type        = string
+}
+
+variable "service_name" {
+  description = "The name of the ECS service"
+  type        = string
+}

@@ -1,5 +1,5 @@
 resource "aws_security_group" "alb_sg" {
-  name   = "alb-sg"
+  name   = var.sg_name
   vpc_id = var.vpc_id
 
 
@@ -33,8 +33,9 @@ resource "aws_security_group" "alb_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name = "nave-alb-sg"
-  }
+  #tags = {
+  #  Name = "nave-alb-sg"
+  #}
 }
+
 

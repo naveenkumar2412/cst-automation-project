@@ -7,7 +7,7 @@ on:
 
 env:
   AWS_REGION: ap-south-1
-  ECR_REPOSITORY_NAME: naveen-ecr
+  ECR_REPOSITORY_NAME: naveencst
 
 jobs:
   deploy:
@@ -54,8 +54,8 @@ jobs:
     - name: Update ECS Service
       run: |
         aws ecs update-service \
-          --cluster naveenk \
-          --service nave-first \
+          --cluster naveencst \
+          --service naveencst \
           --force-new-deployment \
           --region ${{ env.AWS_REGION }}
 

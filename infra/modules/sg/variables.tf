@@ -8,3 +8,8 @@ variable "container_port" {
   type        = number
   default     = 80
 }
+
+variable "sg_name" {
+  description = "Name of the security group"
+  type        = string
+}

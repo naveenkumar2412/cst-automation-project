@@ -1,5 +1,5 @@
 resource "aws_lb" "app_lb" {
-  name               = "my-app-lb"
+  name               = var.aws_lb_name
   internal           = false
   load_balancer_type = "application"
   security_groups    = [var.alb_sg_id]
@@ -12,7 +12,7 @@ resource "aws_lb" "app_lb" {
 }
 
 resource "aws_lb_target_group" "app_tg" {
-  name        = "my-app-tg"
+  name        = var.lb_target_group_name
   port        = var.container_port
   protocol    = "HTTP"
   vpc_id      = var.vpc_id

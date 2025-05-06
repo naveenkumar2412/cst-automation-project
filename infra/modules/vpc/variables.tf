@@ -23,3 +23,27 @@ variable "az_b" {
   type        = string
 }
 
+variable "vpc_name" {
+  description = "Tag name for the VPC"
+  type        = string
+}
+
+variable "public_subnet_a_name" {
+  description = "Tag name for Public Subnet A"
+  type        = string
+}
+
+variable "public_subnet_b_name" {
+  description = "Tag name for Public Subnet B"
+  type        = string
+}
+
+variable "igw_name" {
+  description = "Tag name for Internet Gateway"
+  type        = string
+}
+
+variable "route_table_name" {
+  description = "Tag name for Route Table"
+  type        = string
+}

@@ -13,7 +13,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "nave-main-vpc"
+    Name = var.vpc_name
   }
 }
 
@@ -24,7 +24,7 @@ resource "aws_subnet" "public_a" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "nave-public-subnet-a"
+    Name = var.public_subnet_a_name
   }
 }
 
@@ -35,7 +35,7 @@ resource "aws_subnet" "public_b" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "nave-public-subnet-b"
+    Name = var.public_subnet_b_name
   }
 }
 
@@ -43,7 +43,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "nave-internet-gateway"
+    Name = var.igw_name
   }
 }
 
@@ -56,7 +56,7 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "nave-route-table"
+    Name = var.route_table_name
   }
 }
 

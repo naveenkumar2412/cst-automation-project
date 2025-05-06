@@ -1,16 +1,16 @@
 output "ecs_cluster_name" {
   description = "The name of the ECS Cluster"
-  value       = aws_ecs_cluster.naveenk.name
+  value       = aws_ecs_cluster.naveencst.name
 }
 
 output "cluster_id" {
-  value = aws_ecs_cluster.naveenk.id
+  value = aws_ecs_cluster.naveencst.id
 }
 
 
 output "ecs_cluster_arn" {
   description = "The ARN of the ECS Cluster"
-  value       = aws_ecs_cluster.naveenk.arn
+  value       = aws_ecs_cluster.naveencst.arn
 }
 
 output "ecs_task_definition_arn" {
