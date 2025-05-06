@@ -37,7 +37,7 @@ module "alb" {
 
 module "ecr" {
   source           = "./modules/ecr"
-  repository_name  = "naveen-ecr"
+  repository_name  = "naveencst"
 }
 
 data "aws_caller_identity" "current" {}
