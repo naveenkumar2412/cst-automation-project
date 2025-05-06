@@ -173,3 +173,8 @@ variable "ecs_task_definition" {
 variable "sg_name" {
   type = string
 }
+
+#variable "cluster_name" {
+#  description = "The name of the ECS cluster"
+#  type        = string
+#}

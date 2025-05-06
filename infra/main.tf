@@ -48,6 +48,7 @@ module "ecs" {
   log_group_name               = var.log_group_name
   ecs_cluster_id               = module.ecs.cluster_id
   kms_key_description          = "example"
+  cluster_name                 = var.cluster_name
   service_name                 = var.service_name
   ecs_task_definition          = var.ecs_task_definition
   aws_account_id               = var.aws_account_id
