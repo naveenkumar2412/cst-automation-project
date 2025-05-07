@@ -1,7 +1,6 @@
 variable "ecs_task_execution_role_name" {
   description = "Name of the ECS Task Execution IAM Role"
   type        = string
-  default     = "ecsTaskExecutionRole"
 }
 
 variable "ecs_task_execution_policy_arn" {

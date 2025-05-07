@@ -178,3 +178,7 @@ variable "sg_name" {
 #  description = "The name of the ECS cluster"
 #  type        = string
 #}
+variable "ecs_task_execution_role_name" {
+  description = "The name of the ECS task execution IAM role"
+  type        = string
+}

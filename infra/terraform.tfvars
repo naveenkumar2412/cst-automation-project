@@ -10,6 +10,9 @@ public_subnet_b_name = "naveencst-public-subnet-b"
 igw_name             = "naveencst-internet-gateway"
 route_table_name     = "naveencst-route-table"
 
+#iam
+ecs_task_execution_role_name = "naveencst"
+
 
 # ECS and App
 cluster_name         = "naveencst"

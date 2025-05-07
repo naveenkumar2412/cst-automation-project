@@ -15,6 +15,7 @@ module "vpc" {
 
 module "iam" {
   source = "./modules/iam"
+  ecs_task_execution_role_name = var.ecs_task_execution_role_name
 }
 
 module "sg" {
